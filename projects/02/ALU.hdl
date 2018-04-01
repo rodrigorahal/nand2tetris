@@ -59,5 +59,12 @@ CHIP ALU {
     Not16(in=out1, out=notOut);
     Mux16(a=out1, b=notOut, sel=no, out=out);
 
-    
+    Mux16(a=out1, b=notOut, sel=no, out[0..7]=outFirst, out[8..15]=outLast, out[15]=lastBit);
+
+    Or8Way(in=outFirst, out=outFirstOr);
+    Or8Way(in=outLast, out=outLastOr);
+    Or(a=outFirstOr, b=outLastOr, out=outIsZero);
+    Mux(a=true, b=false, sel=outIsZero, out=zr);
+
+    Mux(a=false, b=true, sel=lastBit, out=ng);
 }
